@@ -1,6 +1,6 @@
 <p-menubar *ngIf="authService.hasRole('ROLE_USER')" [model]="items">
     <ng-template pTemplate="start">
-        <img src="/assets/icac2023u.svg" height="40" class="mr-2">
+        <img src="/assets/logo_grau.svg" height="40" class="mr-2">
     </ng-template>
 
     <p-button pTooltip="Hay cumpleañeros :)" tooltipPosition="left" (click)="showPositionDialog('top-right')" *ngIf="colegiados.length>0" pRipple styleClass="p-button-success p-button-rounded p-button-outlined"><i class="pi pi-bell" pBadge [value]="colegiados.length.toString()" severity="danger"></i></p-button>
