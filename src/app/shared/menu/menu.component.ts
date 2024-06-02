@@ -45,17 +45,37 @@ export class MenuComponent implements OnInit {
     this.obtenerFilial();
     this.items=[
       {
-          label:'Colegiados',
+          label:'Clientes',
           icon:'pi pi-fw pi-users',
-          routerLink: '/colegiados',
+          routerLink: '/clientes',
           visible: this.authService.hasRole('ROLE_USER')
       },
     {
-      label:'Operaciones',
+      label:'Operaciones CAJA',
       icon:'pi pi-fw pi-cog',
       //routerLink: '/universidades',
       visible: this.authService.hasRole('ROLE_USER'),
       items:[
+        {
+          label:'PAGAR SERVICIO',
+          icon:'pi pi-fw pi-paypal',
+          command: ()=> this.rutear(),
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+          label:'Buscar Boleta',
+          icon:'pi pi-fw pi-search',
+          command: ()=> this.rutear(),
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+          label:'Extornar Boleta',
+          icon:'pi pi-fw pi-search-minus',
+          command: ()=> this.rutear(),
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        
+        /*
         {
           label:'Cuota',
           icon:'pi pi-fw pi-money-bill',
@@ -91,7 +111,7 @@ export class MenuComponent implements OnInit {
           icon:'pi pi-fw pi-file-excel',
           routerLink: '/extornos',
           visible: this.authService.hasRole('ROLE_USER')
-        },
+        },*/
       ]
     },
     {
@@ -100,50 +120,66 @@ export class MenuComponent implements OnInit {
       visible: this.authService.hasRole('ROLE_USER'),
       items:[
         {
-          label:'Universidades',
+          label:'Mantenimiento AGUA',
+          icon:'pi pi-fw pi-filter',
+          routerLink: '/universidades',
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+          label:'Mantenimiento LIMPIEZA',
+          icon:'pi pi-fw pi-trash',
+          routerLink: '/universidades',
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+          label:'Mantenimiento TRAMITES',
+          icon:'pi pi-fw pi-book',
+          routerLink: '/universidades',
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+          label:'Mantenimiento DIRECCIONES',
           icon:'pi pi-fw pi-building',
           routerLink: '/universidades',
           visible: this.authService.hasRole('ROLE_USER')
-      },
-      /*
-      {
-        label:'Mesa de partes virtual',
-        icon:'pi pi-lock',
-        command : ()=> this.mejora1(),
-        //routerLink: '/universidades',
-        visible: this.authService.hasRole('ROLE_USER')
-      },*/
+        },
         {
-            label:'Crear Colegiado',
+          label:'Mantenimiento RECIBOS',
+          icon:'pi pi-fw pi-copy',
+          routerLink: '/universidades',
+          visible: this.authService.hasRole('ROLE_USER')
+        },
+        {
+            label:'Registro Clientes',
             icon:'pi pi-fw pi-user-plus',
-            routerLink: '/colegiados/form',
+            routerLink: '/clientes/form',
             visible: this.authService.hasRole('ROLE_ADMIN'),
         },
         {
-          label:'Certificación de Habilidad',
-          icon:'pi pi-lock',
-          command : ()=> this.mejora(),
-          //routerLink: '/universidades',
+          label:'Usuarios y Roles internos',
+          icon:'pi pi-fw pi-id-card',
+          routerLink: '/mantenimiento-usuario',
           visible: this.authService.hasRole('ROLE_USER')
         },
+        {
+          label:'Generar RECIBOS',
+          icon:'pi pi-fw pi-fw pi-book',
+          routerLink: '/clientes/form',
+          visible: this.authService.hasRole('ROLE_ADMIN'),
+      },
+        
       ]
     },
     {
-      label:'Usuarios',
+      label:'Operador',
       icon:'pi pi-fw pi pi-fw pi-user',
       //routerLink: '/universidades',
       visible: this.authService.hasRole('ROLE_USER'),
       items:[
         {
-            label:'Usuarios y Roles internos',
+            label:'MANTENIMIENTO METRO CUBICO',
             icon:'pi pi-fw pi-id-card',
             routerLink: '/mantenimiento-usuario',
-            visible: this.authService.hasRole('ROLE_USER')
-        },
-        {
-            label:'Usuarios de Portal del Agremiado',
-            icon:'pi pi-fw pi-lock-open',
-            routerLink: '/portal-agremiado',
             visible: this.authService.hasRole('ROLE_USER')
         }
       ]
@@ -156,17 +192,29 @@ export class MenuComponent implements OnInit {
       
       items:[
         {
-          label:'FACTURAS',
+          label:'BOLETAS',
           icon:'pi pi-fw pi-wallet',
           items:[
             {
-              label:'Facturas por día',
+              label:'Pago de Servicios por día',
               icon:'pi pi-fw pi-money-bill',
               routerLink: 'reportes/cobros',
               visible: this.authService.hasRole('ROLE_USER')
             },
             {
-              label:'Facturas extornadas por día',
+              label:'Pago de Servicios Extornados por día',
+              icon:'pi pi-fw pi-fw pi-trash',
+              routerLink: 'reportes/cobros',
+              visible: this.authService.hasRole('ROLE_USER')
+            },
+            {
+              label:'Pago de Trámites por día',
+              icon:'pi pi-fw pi-money-bill',
+              routerLink: 'reportes/cobros',
+              visible: this.authService.hasRole('ROLE_USER')
+            },
+            {
+              label:'Pago de Trámites Extornados por día',
               icon:'pi pi-fw pi-trash',
               routerLink: 'reportes/extornos',
               visible: this.authService.hasRole('ROLE_USER')
@@ -174,29 +222,24 @@ export class MenuComponent implements OnInit {
           ]
         },
         {
-          label:'COLEGIADOS',
+          label:'NUEVOS CLIENTES',
           icon:'pi pi-fw pi-users',
           items:[
             {
-              label:'Cumpleaños de colegiados',
-              icon:'pi pi-fw pi-filter-fill',
-              routerLink: 'reportes/cumpleanios',
-              visible: this.authService.hasRole('ROLE_USER')
-            },
-            {
-              label:'Historial de pagos de un colegiado',
-              icon:'pi pi-fw pi-sort-amount-up-alt',
+              label:'Incorporaciones del año',
+              icon:'pi pi-fw pi-id-card',
               routerLink: 'reportes/historial-pagos',
               visible: this.authService.hasRole('ROLE_USER')
             },
             {
-              label:'Reporte de Habilidades',
-              icon:'pi pi-fw pi-book',
+              label:'Incorporaciones Mensual',
+              icon:'pi pi-fw pi-id-card',
               routerLink: 'reportes/habilidades',
               visible: this.authService.hasRole('ROLE_USER')
             },
           ]
         },
+        /*
         {
           label:'INCORPORACIONES',
           icon:'pi pi-fw pi-chart-line',
@@ -214,7 +257,7 @@ export class MenuComponent implements OnInit {
               visible: this.authService.hasRole('ROLE_USER')
             },
           ]
-        },
+        },*/
       ]
     },
     {
@@ -224,21 +267,16 @@ export class MenuComponent implements OnInit {
       visible: this.authService.hasRole('ROLE_USER'),
       items:[
         {
-            label:'Página Web ICAC',
+            label:'Página Web Consulta de RECIBO',
             icon:'pi pi-fw pi-globe',
             command: ()=> this.linkExterno(),
             visible: this.authService.hasRole('ROLE_USER')
         },
         {
-          label:'Página Web Consulta de HABILIDAD Y MULTAS',
-          icon:'pi pi-fw pi-globe',
-          command: ()=> this.linkExterno1(),
-          visible: this.authService.hasRole('ROLE_USER')
-        },
-        {
-          label:'Portal del AGREMIADO',
-          icon:'pi pi-fw pi-globe',
-          command: ()=> this.linkExterno2(),
+          label:'Soporte y Derechos Reservados',
+          icon:'pi pi-shield',
+          command : ()=> this.mejora(),
+          //routerLink: '/universidades',
           visible: this.authService.hasRole('ROLE_USER')
         },
       ]

@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         if(usuario.enabled==false){
           this.authService.logout();
         }
-        this.router.navigate(['/colegiados']);
+        this.router.navigate(['/clientes']);
         
         Swal.fire('Éxito en inicio de sesión',`Bienvenido ${usuario.nombre} ${usuario.apellido}, has iniciado sesión con éxito!!`,'success').then(() => {
           window.location.reload();
