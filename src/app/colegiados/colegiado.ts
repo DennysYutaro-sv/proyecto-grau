@@ -1,6 +1,7 @@
 import { Habilidad } from './habilidad';
 import { Universidad } from './universidad';
 import { Factura } from '../facturas/models/factura';
+import { Direccion } from './direccion';
 export class Colegiado {
     id:number;
     colegiatura:string;
@@ -31,4 +32,13 @@ export class Colegiado {
     otros:string;
 
     facturas:Factura[]=[];
+    //NUEVOS PARAMETROS
+    nronroMedidor:string;
+    agua:String;
+    estado:boolean;
+    limpieza:string;
+    medidor:boolean;
+    registrador:string;
+    direccion: Direccion;
+
 }

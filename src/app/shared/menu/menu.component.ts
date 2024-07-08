@@ -122,13 +122,13 @@ export class MenuComponent implements OnInit {
         {
           label:'Mantenimiento AGUA',
           icon:'pi pi-fw pi-filter',
-          routerLink: '/universidades',
+          routerLink: '/manteniento-agua',
           visible: this.authService.hasRole('ROLE_USER')
         },
         {
           label:'Mantenimiento LIMPIEZA',
           icon:'pi pi-fw pi-trash',
-          routerLink: '/universidades',
+          routerLink: '/manteniento-limpieza',
           visible: this.authService.hasRole('ROLE_USER')
         },
         {
@@ -140,7 +140,7 @@ export class MenuComponent implements OnInit {
         {
           label:'Mantenimiento DIRECCIONES',
           icon:'pi pi-fw pi-building',
-          routerLink: '/universidades',
+          routerLink: '/direcciones',
           visible: this.authService.hasRole('ROLE_USER')
         },
         {

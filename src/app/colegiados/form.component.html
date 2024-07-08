@@ -21,9 +21,9 @@
 </p-toast>
 
 <div class="card" style="padding: 0.5em 2em; background-color: #1f2d40;">
-    <h2 *ngIf="!colegiado.id else h2Block" class="text-layout">Crear nuevo colegiado: </h2>
+    <h2 *ngIf="!colegiado.id else h2Block" class="text-layout">Crear nuevo cliente:  </h2>
     <ng-template #h2Block>
-        <h2 class="text-layout">Editar colegiado: </h2>
+        <h2 class="text-layout">Editar cliente: </h2>
         <div style="text-align: center;" >
             <p-image *ngIf="imagenA.colegiadoId=='0'" class="center" src="/assets/perfil.png" alt="" width="200" [preview]="true"></p-image>
             <p-image *ngIf="imagenA.colegiadoId!='0'" class="center" src="{{imagenA.url}}" alt="" width="200" [preview]="true"></p-image>
@@ -44,38 +44,7 @@
         <div class="grid p-fluid">
 
             <div *ngIf="!colegiado.id" class="col-12 md:col-12">
-                <div class="custom-file " >
-                    <input   pButton  type="file" class="p-button-info p-button-sm p-button-outlined" id="imagen" #imagenInputFile
-                    (change)="onFileChange($event)" accept="image/png, image/jpeg, image/gif">
-                    <label class="p-inputgroup-addon" for="imagen">Subir foto de perfil del colegiado</label>
-                </div>
-                <div *ngIf="imagen" class="col-12 md:col-12">
-                    <h5 class="text-layout">Foto del colegiado: </h5>
-                    <div style="text-align: center;">
-                        <p-image style="z-index: 100;" class="center" src="{{imagenMin}}" alt="" width="200" [preview]="true"></p-image>
-                    </div>
-                </div>
-                <div class="form-group d-flex justify-content-between my-3">
-                    <!--<button type="submit" class="btn btn-outline-success" [disabled]="!imagen"><i class="fas fa-upload"></i> Subir</button>-->
-                    <button pButton class="p-button-warning p-button-sm p-button-outlined" [disabled]="!imagen" (click)="reset()"><i class="fas fa-sync-alt"></i> Quitar foto del colegiado</button>
-                </div>
-            </div>
-            <div *ngIf="imagenA.colegiadoId=='0'" class="col-12 md:col-12">
-                <div class="custom-file">
-                    <input  pButton type="file" class="p-button-info p-button-sm p-button-outlined" id="imagen" #imagenInputFile
-                    (change)="onFileChange($event)" accept="image/png, image/jpeg, image/gif">
-                    <label class="p-inputgroup-addon" for="imagen">Actualizar foto de perfil</label>
-                </div>
-                <div *ngIf="imagen" class="col-12 md:col-12">
-                    <h5 class="text-layout">Foto del colegiado: </h5>
-                    <div style="text-align: center;">
-                        <p-image   class="center" src="{{imagenMin}}" alt="" width="200" [preview]="true"></p-image>
-                    </div>
-                </div>
-                <div class="form-group d-flex justify-content-between my-3">
-                    <!--<button type="submit" class="btn btn-outline-success" [disabled]="!imagen"><i class="fas fa-upload"></i> Subir</button>-->
-                    <button pButton class="p-button-warning p-button-sm p-button-outlined" [disabled]="!imagen" (click)="reset()"><i class="fas fa-sync-alt"></i> Quitar foto del colegiado</button>
-                </div>
+
             </div>
             <div  class="col-12 md:col-12">
                 <p-toolbar>
@@ -100,25 +69,19 @@
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
-                    <input type="text" name="dni"  [(ngModel)]="colegiado.dni" pInputText placeholder="DNI del colegiado" autocomplete="off">         
+                    <input type="text" name="dni"  [(ngModel)]="colegiado.dni" pInputText placeholder="DNI del cliente" autocomplete="off">         
                 </div>
             </div>
 
             <div class="field col-12 md:col-4">
-                <p-calendar name="fechaColegiatura" [(ngModel)]="colegiado.fechaColegiatura"  dateFormat="dd/mm/yy" [showIcon]="true" inputId="icon" placeholder="Fecha de colegiatura"></p-calendar>
+                <p-calendar name="fechaColegiatura" [(ngModel)]="colegiado.fechaColegiatura"  dateFormat="dd/mm/yy" [showIcon]="true" inputId="icon" placeholder="Fecha de inscripción"></p-calendar>
             </div>
 
             
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input type="text" name="nombre"  [(ngModel)]="colegiado.nombre" pInputText placeholder="Nombres" autocomplete="off">         
-                </div>
-            </div>
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input type="text" name="apellido"  [(ngModel)]="colegiado.apellido"  pInputText placeholder="Apellidos" autocomplete="off">         
+                    <input type="text" name="nombre"  [(ngModel)]="colegiado.nombre" pInputText placeholder="Nombre y apellidos" autocomplete="off">         
                 </div>
             </div>
             
@@ -145,16 +108,9 @@
                 </div>
             </div>
             <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-map"></i></span>
-                    <input type="text" name="domicilio" [(ngModel)]="colegiado.domicilio" pInputText placeholder="Dirección de domicilio" autocomplete="off">      
-                </div>
-            </div>
-            <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-briefcase"></i></span>
-                    <input type="text" name="trabajo" [(ngModel)]="colegiado.trabajo" pInputText placeholder="Dirección de trabajo" autocomplete="off">      
-                </div>
+                <p-dropdown [options]="tiposSexo"  [(ngModel)]="colegiado.domicilio" name="sexo" placeholder="Selecciona dirección..." optionValue="nombre" optionLabel="nombre"
+                    [showClear]="true">
+                </p-dropdown>  
             </div>
             <div class="col-12 md:col-4">
                 <div class="p-inputgroup">
@@ -169,31 +125,28 @@
                 </div>
             </div>
             <div class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-phone"></i></span>
-                    <input type="text" name="telefono2" [(ngModel)]="colegiado.telefono2" pInputText placeholder="Telefono de trabajo" autocomplete="off">      
-                </div>
-            </div>
-            <div class="col-12 md:col-4">
                 <p-dropdown [options]="tiposSexo"  [(ngModel)]="colegiado.sexo" name="sexo" placeholder="Seleccionar sexo..." optionValue="nombre" optionLabel="nombre"
                     [showClear]="true">
                 </p-dropdown>  
             </div>
 
-
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="universidades" [(ngModel)]="colegiado.universidad" name="universidad" placeholder="Seleccionar universidad" optionLabel="nombre"
+                <p-dropdown [options]="universidades" [(ngModel)]="colegiado.universidad" name="universidad" placeholder="Tarifas de agua" optionLabel="nombre"
         [showClear]="true"></p-dropdown>
             </div>
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="habilidades" [(ngModel)]="colegiado.habilidad" name="habilidad" placeholder="Seleccionar habilidad" optionLabel="nombre"
+                <p-dropdown [options]="habilidades" [(ngModel)]="colegiado.habilidad" name="habilidad" placeholder="Tarifas de limpieza" optionLabel="nombre"
         [showClear]="true"></p-dropdown>
             </div>
-            <div  class="col-12 md:col-4">
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
-                    <input type="text" name="fechaFallecimiento" [(ngModel)]="colegiado.fechaFallecimiento" pInputText placeholder="Fecha de fallecimiento" autocomplete="off">         
-                </div>
+            <div class="col-12 md:col-4">
+                <p-dropdown [options]="medidores"  [(ngModel)]="colegiado.medidor" name="medidor" placeholder="Seleccionar medidor..." optionValue="value" optionLabel="nombre"
+                    [showClear]="true">
+                </p-dropdown>  
+            </div>
+            <div class="col-12 md:col-4">
+                <p-dropdown [options]="cortes"  [(ngModel)]="colegiado.estado" name="estado" placeholder="¿TIENE CORTE DE AGUA?" optionValue="value" optionLabel="nombre"
+                    [showClear]="true">
+                </p-dropdown>  
             </div>
             <div class="col-12 md:col-12">
                 <div class="p-inputgroup">

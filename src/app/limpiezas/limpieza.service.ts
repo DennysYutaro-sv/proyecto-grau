@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
+import { URL_BACKEND } from '../config/config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Tramite } from '../../facturas/models/tramite';
-import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from '../../usuarios/auth.service';
+import { AuthService } from '../usuarios/auth.service';
 import Swal from 'sweetalert2';
-import { URL_BACKEND } from 'src/app/config/config';
-
+import { Limpieza } from './limpieza';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TramiteService {
-
-  private urlEndPoint: string = URL_BACKEND + '/api/tramites';
+export class LimpiezaService {
+  private urlEndPoint:string= URL_BACKEND + "/api/colegiados";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json' });
-
   constructor(
-    private http: HttpClient,
+    private http:HttpClient,
     private router:Router,
     public authService:AuthService
   ) { }
@@ -30,7 +27,7 @@ export class TramiteService {
     return this.httpHeaders;
   }
   private isNoAutorizado(e:any):boolean{
-    if(e.status == 401 ){
+    if(e.status == 401){
       this.router.navigate(['/login'])
       return true;
     }
@@ -41,9 +38,8 @@ export class TramiteService {
     }
     return false;
   }
-
-  getTramite(id:number):Observable<Tramite>{
-    return this.http.get<Tramite>(`${this.urlEndPoint}/${id}`,{headers:this.agregarAuthorizationHeader()}).pipe(
+  getLimpiezas():Observable<Limpieza[]>{
+    return this.http.get<Limpieza[]>(this.urlEndPoint+`/limpiezas`,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -51,17 +47,8 @@ export class TramiteService {
     );
   }
 
-  getTramites():Observable<Tramite[]>{
-    return this.http.get<Tramite[]>(`${this.urlEndPoint}`,{headers:this.agregarAuthorizationHeader()}).pipe(
-      catchError(e=>{
-        this.isNoAutorizado(e);
-        return throwError(e);
-      })
-    );
-  }
-  getTramitesNombre(term:string):Observable<Tramite[]>{
-    //this.urlEndPoint = URL_BACKEND + '/api';
-    return this.http.get<Tramite[]>(this.urlEndPoint+`/obtener/${term}`,{headers:this.agregarAuthorizationHeader()}).pipe(
+  getLimpieza(id:number):Observable<Limpieza>{
+    return this.http.get<Limpieza>(`${this.urlEndPoint}/limpiezas/${id}`,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -69,8 +56,8 @@ export class TramiteService {
     );
   }
 
-  saveTramite(tramite:Tramite):Observable<Tramite>{
-    return this.http.post<Tramite>(this.urlEndPoint,tramite,{headers:this.agregarAuthorizationHeader()}).pipe(
+  saveLimpieza(limpieza:Limpieza):Observable<Limpieza>{
+    return this.http.post<Limpieza>(this.urlEndPoint+`/limpiezas`,limpieza,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -78,13 +65,12 @@ export class TramiteService {
     );
   }
 
-  updateTramite(tramite:Tramite):Observable<Tramite>{
-    return this.http.put<Tramite>(`${this.urlEndPoint}/${tramite.id}`,tramite,{headers:this.agregarAuthorizationHeader()}).pipe(
+  updateLimpieza(limpieza:Limpieza):Observable<Limpieza>{
+    return this.http.put<Limpieza>(`${this.urlEndPoint}/limpiezas/${limpieza.id}`,limpieza,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
       })
     );
   }
-
 }

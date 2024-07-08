@@ -48,6 +48,12 @@ import { PdfBoletaComponent } from './pdf-boleta/pdf-boleta.component';
 import { BuscarFacturaComponent } from './buscar-factura/buscar-factura.component';
 import { ReporteCumpleComponent } from './reportes/reporte-cumple/reporte-cumple.component';
 import { PortalAgremiadoComponent } from './usuarios/portal-agremiado/portal-agremiado.component';
+import { AguasComponent } from './aguas/aguas.component';
+import { LimpiezasComponent } from './limpiezas/limpiezas.component';
+import { FormAguaComponent } from './aguas/form-agua/form-agua.component';
+import { FormLimpiezaComponent } from './limpiezas/form-limpieza/form-limpieza.component';
+import { DireccionComponent } from './direccion/direccion.component';
+import { FormDireccionComponent } from './direccion/form-direccion/form-direccion.component';
 
 registerLocaleData(localeES,'es');
 
@@ -59,6 +65,10 @@ const routes: Routes = [
   {path: 'universidades/form',component:FormUniversidadComponent},
   {path: 'universidades/form/:id',component:FormUniversidadComponent},
   {path: 'clientes/detalle/:id',component:DetalleComponent},
+  //Mantenimiento direcciones
+  {path: 'direcciones',component:DireccionComponent},
+  {path: 'direcciones/form',component:FormDireccionComponent},
+  {path: 'direcciones/form/:id',component:FormDireccionComponent},
   //SVDY 10022023 visualizar colegiado
   {path: 'clientes/mostrar/:id',component:MostrarComponent},
   {path: 'clientes/form',component:FormComponent},
@@ -102,6 +112,13 @@ const routes: Routes = [
   {path: 'crear-usuario/:id',component:CrearUsuComponent},
   //Portal del agremiado
   {path: 'portal-agremiado',component:PortalAgremiadoComponent},
+  //RUTAS GRAU
+  {path: 'manteniento-agua',component:AguasComponent},
+  {path: 'manteniento-agua/form',component:FormAguaComponent},
+  {path: 'manteniento-agua/form/:id',component:FormAguaComponent},
+  {path: 'manteniento-limpieza',component:LimpiezasComponent},
+  {path: 'manteniento-limpieza/form',component:FormLimpiezaComponent},
+  {path: 'manteniento-limpieza/form/:id',component:FormLimpiezaComponent},
 ];
 
 @NgModule({
@@ -141,6 +158,12 @@ const routes: Routes = [
     BuscarFacturaComponent,
     ReporteCumpleComponent,
     PortalAgremiadoComponent,
+    AguasComponent,
+    LimpiezasComponent,
+    FormAguaComponent,
+    FormLimpiezaComponent,
+    DireccionComponent,
+    FormDireccionComponent
   ],
   imports: [
     BrowserModule,

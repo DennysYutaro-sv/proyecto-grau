@@ -34,22 +34,22 @@ export class ColegiadosComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.items = [
       {
-          label: 'Número de DNI',
+          label: 'Número de DOCUMENTO/DNI',
           icon: 'pi pi-credit-card',
           command: ()=>{this.buscarColegiadoByDni()}
       },
       {
-        label: 'Nombre del colegiado',
+        label: 'Número de SUMINISTRO',
         icon: 'pi pi-users',
         command: ()=>{this.buscarColegiadoByNombre()}
       },
       {
-          label: 'Apellido del colegiado',
+          label: 'Nombre del CLIENTE',
           icon: 'pi pi-sort-alpha-down',
           command: ()=>{this.buscarColegiadoByApellido()}
       },
       {
-          label: 'Número de colegiatura',
+          label: 'Número de IDENTIFICADOR',
           icon: 'pi pi-sort-numeric-down',
           command: ()=>{this.buscarColegiadoByColegiatura()}
       }

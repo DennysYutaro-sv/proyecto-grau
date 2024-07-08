@@ -22,7 +22,7 @@ export class CursosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.tramiteService.getTramites1('curso').subscribe(
+    this.tramiteService.getTramitesNombre('curso').subscribe(
       (tramites) =>{
         this.tramites = tramites;
       }

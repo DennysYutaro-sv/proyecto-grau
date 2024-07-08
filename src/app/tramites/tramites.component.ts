@@ -35,7 +35,7 @@ export class TramitesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.tramiteService.getTramites1('tramite').subscribe(
+    this.tramiteService.getTramitesNombre('tramite').subscribe(
       (tramites) =>{
         this.tramites = tramites;
         tramites.forEach((t) => {

@@ -25,6 +25,8 @@ export class FormComponent implements OnInit {
   public errores: string[];
 
   tiposSexo = [{nombre:"femenino"},{nombre:"masculino"}];
+  medidores = [{nombre:"No tiene medidor",value:false},{nombre:"Tiene medidor",value:true}];
+  cortes = [{nombre:"Sin corte de agua",value:false},{nombre:"Tiene Corte de agua",value:true}];
 
   fechaNacimiento: Date;
   fechaColegiatura: Date;

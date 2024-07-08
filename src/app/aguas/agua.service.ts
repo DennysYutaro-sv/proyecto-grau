@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
+import { URL_BACKEND } from '../config/config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Tramite } from '../../facturas/models/tramite';
-import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from '../../usuarios/auth.service';
+import { AuthService } from '../usuarios/auth.service';
 import Swal from 'sweetalert2';
-import { URL_BACKEND } from 'src/app/config/config';
-
+import { Agua } from './agua';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TramiteService {
-
-  private urlEndPoint: string = URL_BACKEND + '/api/tramites';
+export class AguaService {
+  private urlEndPoint:string= URL_BACKEND + "/api/colegiados";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json' });
-
   constructor(
-    private http: HttpClient,
+    private http:HttpClient,
     private router:Router,
     public authService:AuthService
   ) { }
-
   private agregarAuthorizationHeader(){
     let token = this.authService.token;
     if(token != null){
@@ -30,7 +26,7 @@ export class TramiteService {
     return this.httpHeaders;
   }
   private isNoAutorizado(e:any):boolean{
-    if(e.status == 401 ){
+    if(e.status == 401){
       this.router.navigate(['/login'])
       return true;
     }
@@ -41,9 +37,8 @@ export class TramiteService {
     }
     return false;
   }
-
-  getTramite(id:number):Observable<Tramite>{
-    return this.http.get<Tramite>(`${this.urlEndPoint}/${id}`,{headers:this.agregarAuthorizationHeader()}).pipe(
+  getAguas():Observable<Agua[]>{
+    return this.http.get<Agua[]>(this.urlEndPoint+`/aguas`,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -51,17 +46,8 @@ export class TramiteService {
     );
   }
 
-  getTramites():Observable<Tramite[]>{
-    return this.http.get<Tramite[]>(`${this.urlEndPoint}`,{headers:this.agregarAuthorizationHeader()}).pipe(
-      catchError(e=>{
-        this.isNoAutorizado(e);
-        return throwError(e);
-      })
-    );
-  }
-  getTramitesNombre(term:string):Observable<Tramite[]>{
-    //this.urlEndPoint = URL_BACKEND + '/api';
-    return this.http.get<Tramite[]>(this.urlEndPoint+`/obtener/${term}`,{headers:this.agregarAuthorizationHeader()}).pipe(
+  getAgua(id:number):Observable<Agua>{
+    return this.http.get<Agua>(`${this.urlEndPoint}/aguas/${id}`,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -69,8 +55,8 @@ export class TramiteService {
     );
   }
 
-  saveTramite(tramite:Tramite):Observable<Tramite>{
-    return this.http.post<Tramite>(this.urlEndPoint,tramite,{headers:this.agregarAuthorizationHeader()}).pipe(
+  saveAgua(agua:Agua):Observable<Agua>{
+    return this.http.post<Agua>(this.urlEndPoint+`/aguas`,agua,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
@@ -78,13 +64,12 @@ export class TramiteService {
     );
   }
 
-  updateTramite(tramite:Tramite):Observable<Tramite>{
-    return this.http.put<Tramite>(`${this.urlEndPoint}/${tramite.id}`,tramite,{headers:this.agregarAuthorizationHeader()}).pipe(
+  updateAgua(agua:Agua):Observable<Agua>{
+    return this.http.put<Agua>(`${this.urlEndPoint}/aguas/${agua.id}`,agua,{headers:this.agregarAuthorizationHeader()}).pipe(
       catchError(e=>{
         this.isNoAutorizado(e);
         return throwError(e);
       })
     );
   }
-
 }
