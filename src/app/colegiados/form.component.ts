@@ -11,6 +11,10 @@ import Swal from 'sweetalert2';
 import {MessageService} from 'primeng/api';
 import { Imagen } from './imagen';
 import { AuthService } from '../usuarios/auth.service';
+import { DireccionService } from '../direccion/direccion.service';
+import { Direccion } from './direccion';
+import { TramiteService } from '../tramites/services/tramite.service';
+import { Tramite } from '../facturas/models/tramite';
 
 @Component({
   selector: 'app-form',
@@ -27,6 +31,12 @@ export class FormComponent implements OnInit {
   tiposSexo = [{nombre:"femenino"},{nombre:"masculino"}];
   medidores = [{nombre:"No tiene medidor",value:false},{nombre:"Tiene medidor",value:true}];
   cortes = [{nombre:"Sin corte de agua",value:false},{nombre:"Tiene Corte de agua",value:true}];
+  //direccionesCrear = [];
+  aguaCrear = [];
+  limpiezaCrear = [];
+
+  direcciones:Direccion[]=[];
+  selectedDireccion : Direccion;
 
   fechaNacimiento: Date;
   fechaColegiatura: Date;
@@ -45,6 +55,8 @@ export class FormComponent implements OnInit {
   imagenMin: File;
   imagenA: Imagen= new Imagen();
   exito=false;
+  tramitesAgua: Tramite[] = [];
+  tramitesLimpieza: Tramite[] = [];
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -56,29 +68,43 @@ export class FormComponent implements OnInit {
     private activatedRouter: ActivatedRoute,
     //SVDY 12022023 validamos authService
     public authService:AuthService,
+    public direccionService:DireccionService,
+    public tramiteService:TramiteService,
   ) {}
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
     this.cargarColegiado();
-
-    this.universidadService.getUniversidades().subscribe(
-      (response) => {
-        this.universidades = response;
+    this.direccionService.getDirecciones().subscribe(
+      (response) =>{
+        this.direcciones = response;
+        this.direcciones = this.direcciones.filter(direccion => !direccion.estado);
       }
-    );
+      )
 
-    this.habilidadService.getHabilidades().subscribe(
-      (response) => {
-        this.habilidades = response;
-      }
-    );
+      this.tramiteService.getTramitesNombre('agua').subscribe(
+        (tramites) =>{
+          this.tramitesAgua = tramites;
+          this.tramitesAgua.forEach(agua => {
+              this.aguaCrear.push({nombre:agua.nombre,value:agua.id});
+          });
+        }
+      )
 
+      this.tramiteService.getTramitesNombre('limpieza').subscribe(
+        (tramites) =>{
+          this.tramitesLimpieza = tramites;
+          this.tramitesLimpieza.forEach(limpieza => {
+              this.limpiezaCrear.push({nombre:limpieza.nombre,value:limpieza.id});
+          });
+        }
+      )
   }
 
-  consultarReniec(dni:string){
-    if(dni.length == 8){
-      this.habilidadService.getDni(dni).subscribe(
+  consultarReniec(){
+    console.log("dni: "+this.dniConsulta)
+    if(this.dniConsulta.length == 8){
+      this.habilidadService.getDni(this.dniConsulta).subscribe(
         (r) =>{
           if(r.message){
             Swal.fire({
@@ -96,9 +122,7 @@ export class FormComponent implements OnInit {
           }
           else {
             this.colegiado.dni = r.dni;
-            this.colegiado.nombre = r.nombres;
-            this.colegiado.apellido = r.apellidoPaterno+' '+r.apellidoMaterno
-            //Swal.fire('RENIEC: DNI encontrado','¿Cargar datos?','success');
+            this.colegiado.nombre = r.nombres +' '+ r.apellidoPaterno+' '+r.apellidoMaterno;
             Swal.fire({
               title: 'RENIEC: DNI encontrado',
               text: 'Persona: '+r.nombres +' '+ r.apellidoPaterno+' '+r.apellidoMaterno+' - '+r.dni,
@@ -119,9 +143,9 @@ export class FormComponent implements OnInit {
       this.colegiado.apellido = '';
     } 
   }
-  onKeyUp(dni) { 
+  onKeyUp() { 
     //this.consultarReniec = dni.target.value
-    this.consultarReniec(dni);
+    this.consultarReniec();
   }
 
   cargarColegiado():void{
@@ -133,18 +157,6 @@ export class FormComponent implements OnInit {
           this.colegiadoService.getColegiado(id).subscribe(
             (colegiado) => {
               this.colegiado = colegiado
-              console.log("id :"+colegiado.imagenId)
-              this.colegiadoService.mostrarImagen(colegiado.colegiatura).subscribe(
-                (imagen) => {
-                  if(imagen != undefined){
-                    this.imagenA = imagen
-                  }
-                  else{
-                    this.imagenA.colegiadoId = '0'
-                  }
-                  //console.log("id :"+colegiado.imagenId)
-              }
-              )
           }
           )
         
@@ -163,29 +175,16 @@ export class FormComponent implements OnInit {
 
   create():void{
     this.colegiado.actualizador = this.authService.usuario.nombre + ' ' + this.authService.usuario.apellido;
+    console.log(this.colegiado)
     this.colegiadoService.create(this.colegiado).subscribe(
       colegiado =>{
         this.exito = true;
         this.colegiado=colegiado;
-        if(this.exito == true && this.imagen!= undefined){
-          this.colegiadoService.uploadImagen(this.imagen,this.colegiado.colegiatura).subscribe(
-            imagen => {
-              this.router.navigate(['/colegiados']);
-              Swal.fire("Nuevo colegiado", `El colegiado : ${this.colegiado.nombre}   ${this.colegiado.apellido} ha sido registrado con éxito!!`,'success');
-            },
-            err => {
-              alert(err.error.mensaje);
-              //this.spinner.hide();
-              this.reset();
-            }
-          );
+        if(this.exito == true){
+            this.router.navigate(['/clientes']);
+            Swal.fire("Nuevo colegiado", `El colegiado : ${this.colegiado.nombre}   ${this.colegiado.apellido} ha sido registrado con éxito!!`,'success');
         }
-        else{
-          if(this.exito == true){
-              this.router.navigate(['/colegiados']);
-              Swal.fire("Nuevo colegiado", `El colegiado : ${this.colegiado.nombre}   ${this.colegiado.apellido} ha sido registrado con éxito!!`,'success');
-          }
-        }
+        
       },
       err => {
         this.exito = false;
@@ -197,17 +196,7 @@ export class FormComponent implements OnInit {
       }
     );
   }
-  updateImagen():void{
-    this.colegiadoService.deleteImagen(Number(this.imagenA.id)).subscribe(
-      response => {
-        
-        Swal.fire('Foto eliminada correctamente',`La foto del colegiado: ${this.colegiado.nombre} ${this.colegiado.apellido} fue eliminado.`,'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    )
-  }
+
   update():void{
     //this.colegiado.facturas = null;
     //this.colegiado.resoluciones=null;
@@ -240,40 +229,6 @@ export class FormComponent implements OnInit {
     )
 
   }
-
-onFileChange(event) {
-  const MAXIMO_TAMANIO_BYTES = 100000;
-  this.imagen = event.target.files[0];
-  if (this.imagen.size > MAXIMO_TAMANIO_BYTES) {
-		const tamanioEnMb = MAXIMO_TAMANIO_BYTES / 1000000;
-		Swal.fire("Imagen muy grande", `Por favor redimensionar la imagen(Max. 100 kbs).`,'warning');
-		// Limpiar
-    this.imagen = null;
-    this.imagenMin = null;
-    this.imagenFile.nativeElement.value = '';
-	}
-  const fr = new FileReader();
-  fr.onload = (evento: any) => {
-    this.imagenMin = evento.target.result;
-  };
-  fr.readAsDataURL(this.imagen);
-}
-/*
-onUpload(): void {
-  //this.spinner.show();
-  this.colegiadoService.uploadImagen(this.imagen).subscribe(
-    data => {
-      //this.spinner.hide();
-      this.router.navigate(['/']);
-    },
-    err => {
-      alert(err.error.mensaje);
-      //this.spinner.hide();
-      this.reset();
-    }
-  );
-}
-*/
 reset(): void {
   this.imagen = null;
   this.imagenMin = null;

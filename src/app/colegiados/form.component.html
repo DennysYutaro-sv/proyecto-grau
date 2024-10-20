@@ -24,15 +24,9 @@
     <h2 *ngIf="!colegiado.id else h2Block" class="text-layout">Crear nuevo cliente:  </h2>
     <ng-template #h2Block>
         <h2 class="text-layout">Editar cliente: </h2>
-        <div style="text-align: center;" >
-            <p-image *ngIf="imagenA.colegiadoId=='0'" class="center" src="/assets/perfil.png" alt="" width="200" [preview]="true"></p-image>
-            <p-image *ngIf="imagenA.colegiadoId!='0'" class="center" src="{{imagenA.url}}" alt="" width="200" [preview]="true"></p-image>
-        </div>
+
         <div *ngIf="imagenA.colegiadoId!='0'" style="text-align: center;" >
             
-            <!--<input icon="pi pi-cloud-upload"  pButton type="file" class="p-button-info p-button-sm p-button-outlined mr-2" label="Actualizar foto" id="imagen" #imagenInputFile
-                    (change)="onFileChange($event)" accept="image/png, image/jpeg, image/gif">-->
-            <button pTooltip="Tienes que Eliminar la foto para poder actualizar la foto del colegiado." type="button" pButton (click)="updateImagen()" icon="pi pi-trash"  label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eliminar foto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" class="p-button-danger p-button-outlined"></button>
         </div>
         <br>
     </ng-template>
@@ -40,7 +34,8 @@
 
     <br>
     
-    <form (ngSubmit)="create()" enctype="multipart/form-data">
+    <!--<form (ngSubmit)="create()" enctype="multipart/form-data">-->
+    <form  enctype="multipart/form-data">
         <div class="grid p-fluid">
 
             <div *ngIf="!colegiado.id" class="col-12 md:col-12">
@@ -51,9 +46,9 @@
                     <div class="p-toolbar-group-left" style="width: 100%;">
                         <div class="col-12 md:col-12">
                             <div class="p-inputgroup">
-                                <button (click)="consultarReniec(dniConsulta)" type="button" pButton pRipple label="Consultar DNI en la RENIEC"></button>
-                                <input (keyup.enter)="onKeyUp(dniConsulta)" type="text" [(ngModel)]="dniConsulta" pInputText placeholder="Ingrese DNI">
-                            </div>
+                                <input [(ngModel)]="dniConsulta" name="dniprueba" type="text" pInputText placeholder="Ingrese DNI" (keyup.enter)="onKeyUp()">
+                                <button (click)="consultarReniec()" type="button" pButton pRipple label="Consultar DNI en la RENIEC"></button>
+                              </div>
                         </div>
                     </div>
                 </p-toolbar>
@@ -108,7 +103,7 @@
                 </div>
             </div>
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="tiposSexo"  [(ngModel)]="colegiado.domicilio" name="sexo" placeholder="Selecciona dirección..." optionValue="nombre" optionLabel="nombre"
+                <p-dropdown [options]="direcciones"  [(ngModel)]="colegiado.direccion" name="direccion" placeholder="Selecciona dirección..." optionLabel="nombre"
                     [showClear]="true">
                 </p-dropdown>  
             </div>
@@ -131,11 +126,11 @@
             </div>
 
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="universidades" [(ngModel)]="colegiado.universidad" name="universidad" placeholder="Tarifas de agua" optionLabel="nombre"
+                <p-dropdown [options]="aguaCrear" [(ngModel)]="colegiado.agua" name="agua" placeholder="Tarifas de agua" optionLabel="nombre" optionValue="value"
         [showClear]="true"></p-dropdown>
             </div>
             <div class="col-12 md:col-4">
-                <p-dropdown [options]="habilidades" [(ngModel)]="colegiado.habilidad" name="habilidad" placeholder="Tarifas de limpieza" optionLabel="nombre"
+                <p-dropdown [options]="limpiezaCrear" [(ngModel)]="colegiado.limpieza" name="limpieza" placeholder="Tarifas de limpieza" optionLabel="nombre" optionValue="value"
         [showClear]="true"></p-dropdown>
             </div>
             <div class="col-12 md:col-4">
@@ -162,7 +157,7 @@
             </div>
             
             <div class="col-12 md:col-4">
-                <p-button type="ngSubmit" *ngIf="!colegiado.id else elseBlock" label="Registrar Colegiado" icon="pi pi-check"></p-button>
+                <p-button type="ngSubmit" (click)="create()"  *ngIf="!colegiado.id else elseBlock" label="Registrar Colegiado" icon="pi pi-check"></p-button>
                 <ng-template #elseBlock>
                     <p-button label="Editar Colegiado" type="button" (click)="update()" icon="pi pi-user-edit" class="p-button-info"></p-button>
                 </ng-template>

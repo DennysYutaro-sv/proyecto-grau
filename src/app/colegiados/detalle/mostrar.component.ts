@@ -16,7 +16,8 @@ export class MostrarComponent implements OnInit {
 
   //public facturas:Factura[] = [];
 
-  imagenA: Imagen= new Imagen();
+  corte = ''
+  medidor = ''
 
   constructor(
     private primengConfig: PrimeNGConfig,
@@ -36,17 +37,17 @@ export class MostrarComponent implements OnInit {
         if(id){
           this.colegiadoService.getColegiado(id).subscribe(
             (colegiado) => {
+              if(colegiado.estado){
+                this.corte = 'Sin Corte'
+              }else{
+                this.corte = 'Con corte'
+              }
+              if(!colegiado.medidor){
+                this.medidor = 'Sin Medidor'
+              }else{
+                this.medidor = 'Con Medidor'
+              }
               this.colegiado = colegiado;
-                this.colegiadoService.mostrarImagen(colegiado.colegiatura).subscribe(
-                  (imagen) => {
-                    if(imagen != undefined){
-                      this.imagenA = imagen
-                    }
-                    else{
-                      this.imagenA.colegiadoId = '0'
-                    }
-                }
-                )
               }
           )
         }

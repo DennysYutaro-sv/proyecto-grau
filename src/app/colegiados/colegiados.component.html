@@ -48,31 +48,53 @@
     <p-table [value]="colegiados" responsiveLayout="scroll" >
         <ng-template pTemplate="header" >
             <tr>
-                <th>Colegiatura</th>
+                <th>NRO SUMINISTRO</th>
+                <th>ID</th>
+                <th>DOCUMENTO</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
+                <th *ngIf="authService.hasRole('ROLE_ADMIN') ">Dirección</th>
+                <th>¿Con CORTE?	</th>
+                <th>PAGAR SERVICIO</th>
+                <th>PAGAR TRAMITES</th>
                 <th>Ver</th>
-                <th *ngIf="authService.hasRole('ROLE_ADMIN') ">Editar</th>
+                <th>Editar</th>
                 <th>Boletas</th>
-                <th>Pagar</th>
+                <th>Recibos</th>
+                <th>Medidor</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-colegiado >
             <tr >
+                <td>{{colegiado.id}}</td>
                 <td>{{colegiado.colegiatura}}</td>
+                <td>{{colegiado.dni}}</td>
                 <td>{{colegiado.nombre}}</td>
-                <td>{{colegiado.apellido}}</td>
+                <td>{{colegiado.direccion.nombre}}</td>
                 <td>
-                    <button  icon="pi pi-eye" pButton pRipple type="button" label="Ver" [routerLink]="['/colegiados/mostrar',colegiado.id]" class="p-button-outlined p-button-warning"></button>
-                </td>
-                <td *ngIf="authService.hasRole('ROLE_ADMIN') && colegiado.habilidad.nombre!='EXTERNO'">
-                    <button  icon="pi pi-user-edit" pButton pRipple type="button" label="Editar" [routerLink]="['/colegiados/form',colegiado.id]" class="p-button-outlined p-button-info"></button>
+                    <p-tag *ngIf="!colegiado.estado" severity="danger" value="CON CORTE"></p-tag>
+                    <p-tag *ngIf="colegiado.estado" severity="success" value="NORMAL"></p-tag>
+
                 </td>
                 <td>
-                    <button icon="pi pi-file" pButton pRipple type="button" label="Boletas" [routerLink]="['/colegiados/detalle',colegiado.id]" class="p-button-outlined p-button-help"></button>
+                    <button  icon="pi pi-paypal" pButton pRipple type="button" label="PAGAR" [routerLink]="['/colegiados/mostrar',colegiado.id]" class="p-button-outlined p-button-success"></button>
                 </td>
-                <td *ngIf="colegiado.habilidad.nombre!='EXTERNO'">
-                    <button icon="pi pi-money-bill" pButton pRipple type="button" label="Pagos" [routerLink]="['/pagos',colegiado.id]" class="p-button-outlined p-button-success"></button>
+                <td *ngIf="authService.hasRole('ROLE_ADMIN') ">
+                    <button  icon="pi pi-money-bill" pButton pRipple type="button" label="PAGAR" [routerLink]="['/colegiados/form',colegiado.id]" class="p-button-outlined p-button-danger"></button>
+                </td>
+                <td>
+                    <button icon="pi pi-eye" pButton pRipple type="button" label="VER" [routerLink]="['/clientes/mostrar',colegiado.id]" class="p-button-outlined p-button-warning"></button>
+                </td>
+                <td>
+                    <button icon="pi pi-user-edit" pButton pRipple type="button" label="EDITAR" [routerLink]="['/clientes/form',colegiado.id]" class="p-button-outlined p-button-info"></button>
+                </td>
+                <td>
+                    <button icon="pi pi-file" pButton pRipple type="button" label="BOLETOS" [routerLink]="['/colegiados/detalle',colegiado.id]" class="p-button-outlined p-button-help"></button>
+                </td>
+                <td>
+                    <button icon="pi pi-id-card" pButton pRipple type="button" label="RECIBOS" [routerLink]="['/colegiados/detalle',colegiado.id]" class="p-button-outlined p-button-success"></button>
+                </td>
+                <td >
+                    <button icon="pi pi-compass" pButton pRipple type="button" label="ASIGNAR MEDIDOR" [routerLink]="['/pagos',colegiado.id]" class="p-button-outlined p-button-secondary"></button>
                     <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-circus" [fullScreen] = "true"><p style="color: white" > Cargando Yawar Tech... </p></ngx-spinner>
                 </td>
             </tr>

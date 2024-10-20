@@ -32,6 +32,8 @@ export class ColegiadosComponent implements OnInit {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
+    const storedColegiados = localStorage.getItem('colegiados');
+    this.colegiados = JSON.parse(storedColegiados);
     this.items = [
       {
           label: 'Número de DOCUMENTO/DNI',
@@ -41,12 +43,12 @@ export class ColegiadosComponent implements OnInit {
       {
         label: 'Número de SUMINISTRO',
         icon: 'pi pi-users',
-        command: ()=>{this.buscarColegiadoByNombre()}
+        command: ()=>{this.buscarColegiadoBySuministro()}
       },
       {
           label: 'Nombre del CLIENTE',
           icon: 'pi pi-sort-alpha-down',
-          command: ()=>{this.buscarColegiadoByApellido()}
+          command: ()=>{this.buscarColegiadoByNombre()}
       },
       {
           label: 'Número de IDENTIFICADOR',
@@ -60,6 +62,7 @@ export class ColegiadosComponent implements OnInit {
   buscarColegiadoByDni(){
     if(this.term.length==0 || this.term.length!=8){
       //toast
+      localStorage.removeItem('colegiados');
       this.messageService.clear();
       this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'VERIFIQUE', detail:'El DNI ingresado no tiene un formato correcto, por favor verifique!!'});
 
@@ -70,6 +73,8 @@ export class ColegiadosComponent implements OnInit {
       this.colegiadoService.getColegiadosByDni(this.term).subscribe(
         (response)=>{
           this.colegiados=response;
+          localStorage.removeItem('colegiados');
+          localStorage.setItem('colegiados', JSON.stringify(this.colegiados));
           if(this.colegiados.length==0){
             //toast
             this.messageService.clear();
@@ -82,25 +87,29 @@ export class ColegiadosComponent implements OnInit {
       )
     }
   }
-  buscarColegiadoByApellido(){
+  buscarColegiadoBySuministro(){
     if(this.term.length==0){
-
+      localStorage.removeItem('colegiados');
       //toast
       this.messageService.clear();
-      this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'ERROR', detail:'Tiene que ingresar el apellido a buscar, por favor verifique!!'});
+      this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'ERROR', detail:'Tiene que ingresar el suministro a buscar, por favor verifique!!'});
 
       this.term="";
       this.colegiados=[];
     }
     else{
-      this.colegiadoService.getColegiadosByApellido(this.term).subscribe(
+      this.colegiadoService.getColegiadosBySuministro(this.term).subscribe(
         (response)=>{
+          localStorage.removeItem('colegiados');
+          localStorage.setItem('colegiados', JSON.stringify(this.colegiados));
           this.colegiados=response;
+          
           if(this.colegiados.length==0){
+            localStorage.removeItem('colegiados');
 
             //toast
             this.messageService.clear();
-            this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'NO EXISTE', detail:'El apellido ingresado no existe en nuestra base de datos, por favor verifique!!'});
+            this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'NO EXISTE', detail:'El suministro ingresado no existe en nuestra base de datos, por favor verifique!!'});
 
             this.term="";
             this.colegiados=[];
@@ -111,7 +120,7 @@ export class ColegiadosComponent implements OnInit {
   }
   buscarColegiadoByNombre(){
     if(this.term.length==0){
-
+      localStorage.removeItem('colegiados');
       //toast
       this.messageService.clear();
       this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'ERROR', detail:'Tiene que ingresar el nombre a buscar, por favor verifique!!'});
@@ -123,6 +132,8 @@ export class ColegiadosComponent implements OnInit {
       this.colegiadoService.getColegiadosByNombre(this.term).subscribe(
         (response)=>{
           this.colegiados=response;
+          localStorage.removeItem('colegiados');
+          localStorage.setItem('colegiados', JSON.stringify(this.colegiados));
           if(this.colegiados.length==0){
 
             //toast
@@ -138,7 +149,7 @@ export class ColegiadosComponent implements OnInit {
   }
   buscarColegiadoByColegiatura(){
     if(this.term.length==0){
-
+      localStorage.removeItem('colegiados');
       //toast
       this.messageService.clear();
       this.messageService.add({key: 'c', sticky: true, severity:'warn', summary:'ERROR', detail:'Tiene que ingresar el número de colegiatura a buscar, por favor verifique!!'});
@@ -150,6 +161,8 @@ export class ColegiadosComponent implements OnInit {
       this.colegiadoService.getColegiadosByColegiatura(this.term).subscribe(
         (response)=>{
           this.colegiados=response;
+          localStorage.removeItem('colegiados');
+          localStorage.setItem('colegiados', JSON.stringify(this.colegiados));
           if(this.colegiados.length==0){
 
             //toast

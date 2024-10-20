@@ -1,61 +1,57 @@
 <br>
     
     <div class="card" style="padding: 0.5em 2em; background-color: #1f2d40;">
-        <p-toolbar *ngIf="colegiado.habilidad.nombre!='EXTERNO'">
+        <p-toolbar >
             <div class="p-toolbar-group-left">
-                <h2 class="text-layout">COLEGIADO: {{colegiado.nombre}} {{colegiado.apellido}} </h2>
+                <h2 class="text-layout">CLIENTE: {{colegiado.nombre}} </h2>
+                <p-tag *ngIf="!colegiado.estado" severity="danger" value="CON CORTE"></p-tag>
+                <p-tag *ngIf="colegiado.estado" severity="success" value="NORMAL"></p-tag>
             </div>
             
             <div class="p-toolbar-group-right">
-                <p-button [routerLink]="['/colegiados']" icon="pi pi-times" styleClass="p-button-danger"></p-button>
+                <p-button [routerLink]="['/clientes']" icon="pi pi-times" styleClass="p-button-danger"></p-button>
             </div>
         </p-toolbar>
         <br>
         
-        <div class="grid p-fluid" *ngIf="colegiado.habilidad.nombre!='EXTERNO'">
-            <div class="col-12 md:col-12">
-                <div style="text-align: center;" >
-                    <p-image *ngIf="imagenA.colegiadoId=='0'" class="center" src="/assets/perfil.png" alt="" width="200" [preview]="true"></p-image>
-                    <p-image *ngIf="imagenA.colegiadoId!='0'" class="center" src="{{imagenA.url}}" alt="" width="200" [preview]="true"></p-image>
-                </div>
-            </div>
+        <div class="grid p-fluid">
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Número de colegiatura</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Nro Suministro</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-sort-numeric-up"></i></span>
-                    <input readonly name="colegiatura" [(ngModel)]="colegiado.colegiatura" type="text" pInputText placeholder="Colegiatura" autocomplete="off" >         
+                    <input readonly name="id" [(ngModel)]="colegiado.id" type="text" pInputText placeholder="Nro Suministro" autocomplete="off" >         
                 </div>
             </div>
 
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Número de DNI</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Identificador</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
-                    <input readonly type="text" name="dni" [(ngModel)]="colegiado.dni" pInputText placeholder="DNI del colegiado" autocomplete="off">         
+                    <input readonly type="text" name="colegiatura" [(ngModel)]="colegiado.colegiatura" pInputText placeholder="Identificador" autocomplete="off">         
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Nro de Documento</h4>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
+                    <input readonly type="text" name="dni" [(ngModel)]="colegiado.dni" pInputText placeholder="Identificador" autocomplete="off">         
                 </div>
             </div>
 
             <div class="field col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Fecha de colegiatura</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Fecha de inscripción</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-calendar"></i></span>
                     <input readonly type="text" name="fechaColegiatura" value="{{colegiado.fechaColegiatura  |date:'dd/MM/yyyy' }}"  pInputText autocomplete="off">
                 </div>
             </div>
 
-            
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Nombre</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Nombres y Apellidos</h4>
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input readonly type="text" name="nombre" [(ngModel)]="colegiado.nombre" pInputText placeholder="Nombres" autocomplete="off">         
-                </div>
-            </div>
-            <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Apellidos</h4>
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                    <input readonly type="text" name="apellido" [(ngModel)]="colegiado.apellido"  pInputText placeholder="Apellidos" autocomplete="off">         
+                    <span class="p-inputgroup-addon"><i class="pi pi-id-card"></i></span>
+                    <input readonly type="text" name="nombre" [(ngModel)]="colegiado.nombre" pInputText placeholder="Nombres y Apellidos" autocomplete="off">         
                 </div>
             </div>
             
@@ -92,14 +88,7 @@
                 <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Dirección de domicilio</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-map-marker"></i></span>
-                    <input readonly type="text" name="domicilio" [(ngModel)]="colegiado.domicilio" pInputText placeholder="Domicilio" autocomplete="off">      
-                </div>
-            </div>
-            <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Dirección de trabajo</h4>
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-map-marker"></i></span>
-                    <input readonly type="text" name="trabajo" [(ngModel)]="colegiado.trabajo" pInputText placeholder="trabajo" autocomplete="off">      
+                    <input readonly type="text" name="domicilio" [(ngModel)]="colegiado.direccion.nombre" pInputText placeholder="Domicilio" autocomplete="off">      
                 </div>
             </div>
             <div class="col-12 md:col-4">
@@ -116,13 +105,7 @@
                     <input readonly type="text" name="telefono" [(ngModel)]="colegiado.telefono" pInputText placeholder="Telefono" autocomplete="off">      
                 </div>
             </div>
-            <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Segundo Telefono</h4>
-                <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-phone"></i></span>
-                    <input type="text" name="telefono2" [(ngModel)]="colegiado.telefono2" pInputText placeholder="Segundo Telefono" autocomplete="off">      
-                </div>
-            </div>
+
             <div class="col-12 md:col-4">
                 <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Sexo</h4>
                 <div class="p-inputgroup">
@@ -132,35 +115,49 @@
             </div>
 
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Universidad</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Tarifas Agua</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-building"></i></span>
-                    <input readonly type="text" name="universidad"  value="{{colegiado.universidad.nombre}}" pInputText placeholder="Colegiatura" autocomplete="off" >         
+                    <input readonly type="text" name="agua"  value="{{colegiado.agua}}" pInputText placeholder="Colegiatura" autocomplete="off" >         
                 </div>
             </div>
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Habilidad</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Tarifas Limpieza</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-users"></i></span>
-                    <input readonly type="text" name="habilidad"  value="{{colegiado.habilidad.nombre}}"  pInputText placeholder="Colegiatura" autocomplete="off" >         
+                    <input readonly type="text" name="limpieza"  value="{{colegiado.limpieza}}"  pInputText placeholder="Colegiatura" autocomplete="off" >         
                 </div>
             </div>
             <div class="col-12 md:col-4">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Fecha de fallecimiento</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">¿Tiene medidor?</h4>
                 <div class="p-inputgroup">
-                    <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
-                    <input readonly type="text" name="fechaFallecimiento" [(ngModel)]="colegiado.fechaFallecimiento" pInputText  autocomplete="off">      
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input readonly type="text" name="medidor" [(ngModel)]="medidor" pInputText placeholder="sexo" autocomplete="off">         
+                </div>
+            </div>
+            <div class="col-12 md:col-4">
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">¿Tiene corte?</h4>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input readonly type="text" name="medidor" [(ngModel)]="corte" pInputText placeholder="sexo" autocomplete="off">         
+                </div>
+            </div>
+            <div class="col-12 md:col-4">
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">DEUDA ANTERIOR</h4>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input readonly type="text" name="fechaFallecimiento" [(ngModel)]="colegiado.fechaFallecimiento" pInputText placeholder="DEUDA ANTERIOR" autocomplete="off">         
                 </div>
             </div>
             <div class="col-12 md:col-12">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Personal que actualizo última vez al colegiado</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Personal que actualizo última vez al cliente</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>
                     <input readonly type="text" name="actualizador" [(ngModel)]="colegiado.actualizador" pInputText  autocomplete="off">      
                 </div>
             </div>
             <div class="col-12 md:col-12">
-                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Resoluciones del colegiado</h4>
+                <h4 class="text-layout" style="padding: 0 !important;margin: 0px;">Resoluciones del cliente</h4>
                 <div class="p-inputgroup">
                     <span class="p-inputgroup-addon"><i class="pi pi-file"></i></span>    
                     <textarea name="lm" rows="3" cols="30" [(ngModel)]="colegiado.lm" placeholder="Resoluciones" pInputTextarea autocomplete="off">{{colegiado.lm}}</textarea> 

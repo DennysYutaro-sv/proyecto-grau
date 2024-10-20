@@ -69,6 +69,15 @@ export class ColegiadoService {
       })
     );
   }
+  //Traer por apellido
+  getColegiadosBySuministro(term:string):Observable<Colegiado[]>{
+    return this.http.get<Colegiado[]>(this.urlEndPoint+`/colegiados/filtrar-suministro/${term}`,{headers:this.agregarAuthorizationHeader()}).pipe(
+      catchError(e=>{
+        this.isNoAutorizado(e);
+        return throwError(e);
+      })
+    );
+  }
   //Traer por colegiatura
   getColegiadosByColegiatura(term:string):Observable<Colegiado[]>{
     return this.http.get<Colegiado[]>(this.urlEndPoint+`/colegiados/filtrar-colegiados-colegiatura/${term}`,{headers:this.agregarAuthorizationHeader()}).pipe(
